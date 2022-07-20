@@ -1,16 +1,25 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+html{
+  font-size: 62.5%;
+  box-sizing:border-box;
 }
-
-a {
-  color: inherit;
-  text-decoration: none;
+*, *:before, *:after{
+  margin:0;
+  padding:0;
+  appearance: none;
+  box-sizing: inherit;
 }
-
-* {
-  box-sizing: border-box;
+body{
+  font-size: 16px;
+  /* Esto lo que hace es que 1rem equivalga a 10px */
+}
+.main-app{
+    padding: 0 2rem;
+}
+.navbar{
+    display: flex;
+    width: 100%;
+    /* flex-direction: row; */
+    align-items: center;
+    /* justifyContent: "start", */
+    padding: 0 2rem;
 }
