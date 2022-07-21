@@ -1,4 +1,4 @@
-import { Grid, Text } from "@nextui-org/react";
+import { Container, Grid, Text } from "@nextui-org/react";
 import { NextPage } from "next";
 import Layout from "../../components/layouts/Layout";
 import PokemonCard from "../../components/pokemon/PokemonCard";
@@ -14,7 +14,11 @@ const Favoritos: NextPage = (): JSX.Element => {
         pokesFavoritos.map((pokemon) => (
                  <PokemonCard key={pokemon.id} id={pokemon.id} name={pokemon.name} img={pokemon.sprites.front_default} /> 
               ))
-        ): <Text h1>No hay Pokémons Favoritos</Text>}
+        ): (
+          <Container css={{display : 'flex'}} alignItems="center">
+            <Text h1>No hay Pokémons Favoritos</Text>
+          </Container>
+        )}
       </Grid.Container>
     </Layout>
   );

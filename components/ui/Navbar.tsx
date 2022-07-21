@@ -23,17 +23,17 @@ const Navbar: FC = (): JSX.Element => {
 
       <Link href='/'>
         <a style={{cursor : 'pointer', display:'flex'}}>
-        <Text color="white" h2>
+        <Text color="white" h1>
           P
         </Text>
-        <Text color="white" h3>
+        <Text color="white" h2>
           okémon
         </Text>
         </a>
       </Link>
       <Spacer css={{ flex: 1 }} />
       <Link href='/favoritos'>
-        <Text color="white" h3 css={{cursor : 'pointer'}}>Favoritos</Text>
+        <Text color="white" h2 css={{cursor : 'pointer'}}>Favoritos</Text>
       </Link>
     </div>
   );

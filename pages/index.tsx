@@ -22,7 +22,7 @@ const HomePage: NextPage<Props> = ({ pokemon }): JSX.Element => {
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const response = await fetch(
-    `${process.env.BASE_API_POKEMON}/pokemon?limit=151`
+    `https://pokeapi.co/api/v2/pokemon?limit=151`
   );
   const { results }: PokeapiResponse = await response.json();
   const pokemons = results.map((poke, id) => {

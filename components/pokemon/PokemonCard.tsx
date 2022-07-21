@@ -10,7 +10,7 @@ interface PokemonCardProps {
 const PokemonCard: FC<PokemonCardProps> = ({ name, img, id }): JSX.Element => {
   const router = useRouter();
   const clickPokemon = () => {
-    router.push(`/pokemon/${id}`);
+    router.push(`/name/${name}`);
   };
   return (
     <Grid xs={6} sm={3} md={2} xl={1}>
@@ -28,7 +28,7 @@ const PokemonCard: FC<PokemonCardProps> = ({ name, img, id }): JSX.Element => {
             <Text transform="capitalize" h3>
               {name}
             </Text>
-            <Text h3>{id}</Text>
+            <Text h3>#{id}</Text>
           </Row>
         </Card.Footer>
       </Card>
