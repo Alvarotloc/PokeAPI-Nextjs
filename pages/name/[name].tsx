@@ -1,9 +1,15 @@
 import Layout from "../../components/layouts/Layout";
-import type { PokemonBig, IFavoritosProvider, Pokemon, PokeapiResponse } from "../../interfaces";
+import type {
+  PokemonBig,
+  IFavoritosProvider,
+  Pokemon,
+  PokeapiResponse,
+} from "../../interfaces";
 import { NextPage, GetStaticPaths, GetStaticProps } from "next";
 import { Button, Card, Container, Grid, Image, Text } from "@nextui-org/react";
 import useFavoritos from "../../hooks/useFavoritos";
-import confetti from 'canvas-confetti';
+import confetti from "canvas-confetti";
+import getPokemonInfo from "../../utils/getPokemonInfo";
 
 interface Props {
   pokemon: PokemonBig;
@@ -17,21 +23,25 @@ const PokemonPage: NextPage<Props> = ({ pokemon }): JSX.Element => {
       pokesFavoritos.find(
         (pokemonFavorito) => pokemonFavorito.id === pokemon.id
       )
-    ){
-      setPokesFavoritos(pokesFavoritos.filter((pokemonFavorito) => pokemonFavorito.id !== pokemon.id));
+    ) {
+      setPokesFavoritos(
+        pokesFavoritos.filter(
+          (pokemonFavorito) => pokemonFavorito.id !== pokemon.id
+        )
+      );
       return;
     }
-      setPokesFavoritos([...pokesFavoritos, pokemon]);
-      confetti({
-        zIndex: 100,
-        particleCount: 100,
-        spread: 160,
-        angle : -100,
-        origin : {
-          x : 1,
-          y : 0
-        }
-      })
+    setPokesFavoritos([...pokesFavoritos, pokemon]);
+    confetti({
+      zIndex: 100,
+      particleCount: 100,
+      spread: 160,
+      angle: -100,
+      origin: {
+        x: 1,
+        y: 0,
+      },
+    });
   };
   return (
     <Layout title={`Pokémon ${pokemon.name}`}>
@@ -60,9 +70,15 @@ const PokemonPage: NextPage<Props> = ({ pokemon }): JSX.Element => {
               <Text h1 transform="capitalize">
                 {pokemon.name}
               </Text>
-              <Button color="gradient" ghost={!pokesFavoritos.find(
-                  (pokemonFavorito) => pokemonFavorito.id === pokemon.id
-                )} onClick={setFavorito}>
+              <Button
+                color="gradient"
+                ghost={
+                  !pokesFavoritos.find(
+                    (pokemonFavorito) => pokemonFavorito.id === pokemon.id
+                  )
+                }
+                onPress={setFavorito}
+              >
                 {pokesFavoritos.find(
                   (pokemonFavorito) => pokemonFavorito.id === pokemon.id
                 )
@@ -109,34 +125,33 @@ const PokemonPage: NextPage<Props> = ({ pokemon }): JSX.Element => {
 };
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-  const response = await fetch(
-    `https://pokeapi.co/api/v2/pokemon?limit=151`
-  );
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=151`);
   const { results }: PokeapiResponse = await response.json();
-  const pokemon151 = results.map(
-    (pokemon) => pokemon.name
-  );
+  const pokemon151 = results.map((pokemon) => pokemon.name);
 
   return {
     paths: pokemon151.map((name) => ({ params: { name } })),
-    fallback: false,
+    // fallback: false,
+    fallback: "blocking",
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { name } = params as { name: string };
-  const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-  const data: PokemonBig = await resp.json();
-  
-  const pokemon:Pokemon = {
-    id : data.id,
-    name : data.name,
-    sprites : data.sprites
+  const pokemon = await getPokemonInfo(name);
+  if (!pokemon) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
   }
   return {
     props: {
       pokemon,
     },
+    revalidate: 86400,
   };
 };
 
